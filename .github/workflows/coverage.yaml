@@ -1,0 +1,17 @@
+on:
+  schedule:
+    - cron: 0 0 * * *
+
+name: Coverage Report
+
+jobs:
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    container:
+      image: xd009642/tarpaulin:develop
+      options: --security-opt seccomp=unconfined
+    steps:
+      - uses: actions/checkout@v3
+      - run: cargo tarpaulin --verbose --all-features --workspace --timeout 120 --out Xml
+      - uses: codecov/codecov-action@v3
