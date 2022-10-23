@@ -38,3 +38,14 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
       - run: cargo clippy -- -D warnings
+
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    container:
+      image: xd009642/tarpaulin:develop
+      options: --security-opt seccomp=unconfined
+    steps:
+      - uses: actions/checkout@v2
+      - run: cargo tarpaulin --verbose --all-features --workspace --timeout 120 --out Xml
+      - uses: codecov/codecov-action@v2
