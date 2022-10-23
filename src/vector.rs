@@ -50,14 +50,25 @@ impl std::ops::Add<Vector> for Vector {
     }
 }
 
-impl std::ops::Add<Point> for Vector {
+impl std::ops::Sub<Vector> for Vector {
     type Output = Vector;
 
-    fn add(self, rhs: Point) -> Self::Output {
+    fn sub(self, rhs: Vector) -> Self::Output {
         Self {
-            x: self.x() + rhs.x(),
-            y: self.y() + rhs.y(),
-            z: self.z() + rhs.z(),
+            x: self.x() - rhs.x(),
+            y: self.y() - rhs.y(),
+            z: self.z() - rhs.z(),
+        }
+    }
+}
+impl std::ops::Sub<Point> for Point {
+    type Output = Vector;
+
+    fn sub(self, rhs: Point) -> Self::Output {
+        Self::Output {
+            x: self.x() - rhs.x(),
+            y: self.y() - rhs.y(),
+            z: self.z() - rhs.z(),
         }
     }
 }
@@ -77,7 +88,7 @@ mod tests {
     }
 
     #[test]
-    fn add_vector() {
+    fn add_vector_and_vector() {
         let vector1 = Vector::new(3.0, -2.0, 5.0);
         let vector2 = Vector::new(-2.0, 3.0, 1.0);
 
@@ -88,12 +99,23 @@ mod tests {
     }
 
     #[test]
-    fn add_point() {
-        let vector = Vector::new(3.0, -2.0, 5.0);
-        let point = Point::new(-2.0, 3.0, 1.0);
+    fn sub_vector_from_vector() {
+        let vector1 = Vector::new(3.0, 2.0, 1.0);
+        let vector2 = Vector::new(5.0, 6.0, 7.0);
 
-        let result = vector + point;
-        let expected = Vector::new(1.0, 1.0, 6.0);
+        let result = vector1 - vector2;
+        let expected = Vector::new(-2.0, -4.0, -6.0);
+
+        assert_eq!(result, expected)
+    }
+
+    #[test]
+    fn sub_point_from_point() {
+        let point1 = Point::new(3.0, 2.0, 1.0);
+        let point2 = Point::new(5.0, 6.0, 7.0);
+
+        let result = point1 - point2;
+        let expected = Vector::new(-2.0, -4.0, -6.0);
 
         assert_eq!(result, expected)
     }

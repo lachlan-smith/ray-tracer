@@ -38,18 +38,6 @@ impl PartialEq for Point {
     }
 }
 
-impl std::ops::Add<Point> for Point {
-    type Output = Point;
-
-    fn add(self, rhs: Point) -> Self::Output {
-        Self {
-            x: self.x() + rhs.x(),
-            y: self.y() + rhs.y(),
-            z: self.z() + rhs.z(),
-        }
-    }
-}
-
 impl std::ops::Add<Vector> for Point {
     type Output = Point;
 
@@ -58,6 +46,30 @@ impl std::ops::Add<Vector> for Point {
             x: self.x() + rhs.x(),
             y: self.y() + rhs.y(),
             z: self.z() + rhs.z(),
+        }
+    }
+}
+
+impl std::ops::Add<Point> for Vector {
+    type Output = Point;
+
+    fn add(self, rhs: Point) -> Self::Output {
+        Self::Output {
+            x: self.x() + rhs.x(),
+            y: self.y() + rhs.y(),
+            z: self.z() + rhs.z(),
+        }
+    }
+}
+
+impl std::ops::Sub<Vector> for Point {
+    type Output = Point;
+
+    fn sub(self, rhs: Vector) -> Self::Output {
+        Self {
+            x: self.x() - rhs.x(),
+            y: self.y() - rhs.y(),
+            z: self.z() - rhs.z(),
         }
     }
 }
@@ -77,23 +89,34 @@ mod tests {
     }
 
     #[test]
-    fn add_point() {
-        let point1 = Point::new(-2.0, 3.0, 1.0);
-        let point2 = Point::new(3.0, -2.0, 5.0);
+    fn add_point_and_vector() {
+        let point = Point::new(-2.0, 3.0, 1.0);
+        let vector = Vector::new(3.0, -2.0, 5.0);
 
-        let result = point1 + point2;
+        let result = point + vector;
         let expected = Point::new(1.0, 1.0, 6.0);
 
         assert_eq!(result, expected)
     }
 
     #[test]
-    fn add_vector() {
-        let point = Point::new(-2.0, 3.0, 1.0);
+    fn add_vector_and_point() {
         let vector = Vector::new(3.0, -2.0, 5.0);
+        let point = Point::new(-2.0, 3.0, 1.0);
 
-        let result = point + vector;
+        let result = vector + point;
         let expected = Point::new(1.0, 1.0, 6.0);
+
+        assert_eq!(result, expected)
+    }
+
+    #[test]
+    fn sub_vector_from_point() {
+        let point = Point::new(3.0, 2.0, 1.0);
+        let vector = Vector::new(5.0, 6.0, 7.0);
+
+        let result = point - vector;
+        let expected = Point::new(-2.0, -4.0, -6.0);
 
         assert_eq!(result, expected)
     }
