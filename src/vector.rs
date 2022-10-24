@@ -61,6 +61,7 @@ impl std::ops::Sub<Vector> for Vector {
         }
     }
 }
+
 impl std::ops::Sub<Point> for Point {
     type Output = Vector;
 
@@ -69,6 +70,18 @@ impl std::ops::Sub<Point> for Point {
             x: self.x() - rhs.x(),
             y: self.y() - rhs.y(),
             z: self.z() - rhs.z(),
+        }
+    }
+}
+
+impl std::ops::Neg for Vector {
+    type Output = Vector;
+
+    fn neg(self) -> Self::Output {
+        Self {
+            x: -self.x(),
+            y: -self.y(),
+            z: -self.z(),
         }
     }
 }
@@ -118,5 +131,14 @@ mod tests {
         let expected = Vector::new(-2.0, -4.0, -6.0);
 
         assert_eq!(result, expected)
+    }
+
+    #[test]
+    fn negate_vector() {
+        let vector = Vector::new(1.0, -2.0, 3.0);
+
+        let expected = Vector::new(-1.0, 2.0, -3.0);
+
+        assert_eq!(-vector, expected)
     }
 }
