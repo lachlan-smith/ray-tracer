@@ -7,6 +7,12 @@ pub struct Vector {
     z: f64,
 }
 
+impl Vector {
+    pub fn magnitude(&self) -> f64 {
+        f64::sqrt(self.x() * self.x() + self.y() * self.y() + self.z() * self.z())
+    }
+}
+
 impl Tuple for Vector {
     fn new(x: f64, y: f64, z: f64) -> Self {
         Vector { x, y, z }
@@ -202,6 +208,56 @@ mod tests {
 
         let result = vector / 0.5;
         let expected = Vector::new(2.0, -4.0, 6.0);
+
+        assert_eq!(result, expected)
+    }
+
+    #[test]
+    fn compute_magnitude_x() {
+        let vector = Vector::new(1.0, 0.0, 0.0);
+
+        let result = vector.magnitude();
+        let expected = f64::sqrt(1.0);
+
+        assert_eq!(result, expected)
+    }
+
+    #[test]
+    fn compute_magnitude_y() {
+        let vector = Vector::new(0.0, 1.0, 0.0);
+
+        let result = vector.magnitude();
+        let expected = f64::sqrt(1.0);
+
+        assert_eq!(result, expected)
+    }
+
+    #[test]
+    fn compute_magnitude_z() {
+        let vector = Vector::new(0.0, 0.0, 1.0);
+
+        let result = vector.magnitude();
+        let expected = f64::sqrt(1.0);
+
+        assert_eq!(result, expected)
+    }
+
+    #[test]
+    fn compute_magnitude_positive() {
+        let vector = Vector::new(1.0, 2.0, 3.0);
+
+        let result = vector.magnitude();
+        let expected = f64::sqrt(14.0);
+
+        assert_eq!(result, expected)
+    }
+
+    #[test]
+    fn compute_magnitude_negative() {
+        let vector = Vector::new(-1.0, -2.0, -3.0);
+
+        let result = vector.magnitude();
+        let expected = f64::sqrt(14.0);
 
         assert_eq!(result, expected)
     }
