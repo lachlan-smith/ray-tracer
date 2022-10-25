@@ -86,6 +86,30 @@ impl std::ops::Neg for Vector {
     }
 }
 
+impl std::ops::Mul<f64> for Vector {
+    type Output = Vector;
+
+    fn mul(self, rhs: f64) -> Self::Output {
+        Self {
+            x: self.x() * rhs,
+            y: self.y() * rhs,
+            z: self.z() * rhs,
+        }
+    }
+}
+
+impl std::ops::Div<f64> for Vector {
+    type Output = Vector;
+
+    fn div(self, rhs: f64) -> Self::Output {
+        Self {
+            x: self.x() / rhs,
+            y: self.y() / rhs,
+            z: self.z() / rhs,
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -140,5 +164,45 @@ mod tests {
         let expected = Vector::new(-1.0, 2.0, -3.0);
 
         assert_eq!(-vector, expected)
+    }
+
+    #[test]
+    fn multiply_vector_by_scalar() {
+        let vector = Vector::new(1.0, -2.0, 3.0);
+
+        let result = vector * 3.5;
+        let expected = Vector::new(3.5, -7.0, 10.5);
+
+        assert_eq!(result, expected)
+    }
+
+    #[test]
+    fn multiply_vector_by_fraction() {
+        let vector = Vector::new(1.0, -2.0, 3.0);
+
+        let result = vector * 0.5;
+        let expected = Vector::new(0.5, -1.0, 1.5);
+
+        assert_eq!(result, expected)
+    }
+
+    #[test]
+    fn divide_vector_by_scalar() {
+        let vector = Vector::new(1.0, -2.0, 3.0);
+
+        let result = vector / 2.0;
+        let expected = Vector::new(0.5, -1.0, 1.5);
+
+        assert_eq!(result, expected)
+    }
+
+    #[test]
+    fn divide_vector_by_fraction() {
+        let vector = Vector::new(1.0, -2.0, 3.0);
+
+        let result = vector / 0.5;
+        let expected = Vector::new(2.0, -4.0, 6.0);
+
+        assert_eq!(result, expected)
     }
 }

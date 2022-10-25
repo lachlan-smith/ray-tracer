@@ -74,6 +74,30 @@ impl std::ops::Sub<Vector> for Point {
     }
 }
 
+impl std::ops::Mul<f64> for Point {
+    type Output = Point;
+
+    fn mul(self, rhs: f64) -> Self::Output {
+        Self {
+            x: self.x() * rhs,
+            y: self.y() * rhs,
+            z: self.z() * rhs,
+        }
+    }
+}
+
+impl std::ops::Div<f64> for Point {
+    type Output = Point;
+
+    fn div(self, rhs: f64) -> Self::Output {
+        Self {
+            x: self.x() / rhs,
+            y: self.y() / rhs,
+            z: self.z() / rhs,
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -117,6 +141,46 @@ mod tests {
 
         let result = point - vector;
         let expected = Point::new(-2.0, -4.0, -6.0);
+
+        assert_eq!(result, expected)
+    }
+
+    #[test]
+    fn multiply_point_by_scalar() {
+        let point = Point::new(1.0, -2.0, 3.0);
+
+        let result = point * 3.5;
+        let expected = Point::new(3.5, -7.0, 10.5);
+
+        assert_eq!(result, expected)
+    }
+
+    #[test]
+    fn multiply_point_by_fraction() {
+        let point = Point::new(1.0, -2.0, 3.0);
+
+        let result = point * 0.5;
+        let expected = Point::new(0.5, -1.0, 1.5);
+
+        assert_eq!(result, expected)
+    }
+
+    #[test]
+    fn divide_point_by_scalar() {
+        let point = Point::new(1.0, -2.0, 3.0);
+
+        let result = point / 2.0;
+        let expected = Point::new(0.5, -1.0, 1.5);
+
+        assert_eq!(result, expected)
+    }
+
+    #[test]
+    fn divide_point_by_fraction() {
+        let point = Point::new(1.0, -2.0, 3.0);
+
+        let result = point / 0.5;
+        let expected = Point::new(2.0, -4.0, 6.0);
 
         assert_eq!(result, expected)
     }
