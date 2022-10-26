@@ -19,6 +19,14 @@ impl Vector {
     pub fn dot(&self, vector: Vector) -> f64 {
         self.x() * vector.x() + self.y() * vector.y() + self.z() * vector.z()
     }
+
+    pub fn cross(&self, vector: Vector) -> Self {
+        Vector::new(
+            self.y() * vector.z() - self.z() * vector.y(),
+            self.z() * vector.x() - self.x() * vector.z(),
+            self.x() * vector.y() - self.y() * vector.x(),
+        )
+    }
 }
 
 impl Tuple for Vector {
@@ -311,5 +319,27 @@ mod tests {
         let result = vector1.dot(vector2);
 
         assert_eq!(result, 20.0)
+    }
+
+    #[test]
+    fn cross_product() {
+        let vector1 = Vector::new(1.0, 2.0, 3.0);
+        let vector2 = Vector::new(2.0, 3.0, 4.0);
+
+        let result = vector1.cross(vector2);
+        let expected = Vector::new(-1.0, 2.0, -1.0);
+
+        assert_eq!(result, expected)
+    }
+
+    #[test]
+    fn cross_product_reverse() {
+        let vector1 = Vector::new(1.0, 2.0, 3.0);
+        let vector2 = Vector::new(2.0, 3.0, 4.0);
+
+        let result = vector2.cross(vector1);
+        let expected = Vector::new(1.0, -2.0, 1.0);
+
+        assert_eq!(result, expected)
     }
 }
