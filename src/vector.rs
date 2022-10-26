@@ -11,6 +11,10 @@ impl Vector {
     pub fn magnitude(&self) -> f64 {
         f64::sqrt(self.x() * self.x() + self.y() * self.y() + self.z() * self.z())
     }
+
+    pub fn normalise(&self) -> Self {
+        *self / self.magnitude()
+    }
 }
 
 impl Tuple for Vector {
@@ -260,5 +264,38 @@ mod tests {
         let expected = f64::sqrt(14.0);
 
         assert_eq!(result, expected)
+    }
+
+    #[test]
+    fn normalise_simple_vector() {
+        let vector = Vector::new(4.0, 0.0, 0.0);
+
+        let result = vector.normalise();
+        let expected = Vector::new(1.0, 0.0, 0.0);
+
+        assert_eq!(result, expected)
+    }
+
+    #[test]
+    fn normalise_complex_vector() {
+        let vector = Vector::new(1.0, 2.0, 3.0);
+
+        let result = vector.normalise();
+        let expected = Vector::new(
+            1.0 / f64::sqrt(14.0),
+            2.0 / f64::sqrt(14.0),
+            3.0 / f64::sqrt(14.0),
+        );
+
+        assert_eq!(result, expected)
+    }
+
+    #[test]
+    fn magnitude_normalised_vector() {
+        let vector = Vector::new(1.0, 2.0, 3.0);
+
+        let result = vector.normalise().magnitude();
+
+        assert_eq!(result, 1.0)
     }
 }
