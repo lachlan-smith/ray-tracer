@@ -15,6 +15,10 @@ impl Vector {
     pub fn normalise(&self) -> Self {
         *self / self.magnitude()
     }
+
+    pub fn dot(&self, vector: Vector) -> f64 {
+        self.x() * vector.x() + self.y() * vector.y() + self.z() * vector.z()
+    }
 }
 
 impl Tuple for Vector {
@@ -297,5 +301,15 @@ mod tests {
         let result = vector.normalise().magnitude();
 
         assert_eq!(result, 1.0)
+    }
+
+    #[test]
+    fn dot_product() {
+        let vector1 = Vector::new(1.0, 2.0, 3.0);
+        let vector2 = Vector::new(2.0, 3.0, 4.0);
+
+        let result = vector1.dot(vector2);
+
+        assert_eq!(result, 20.0)
     }
 }
